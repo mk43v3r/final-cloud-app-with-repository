@@ -141,6 +141,8 @@ def extract_answers(request):
 def show_exam_result(request, course_id, submission_id):
     course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id)
+    user = submission.enrollment.user
+
     total_correct = 0
     user_correct = 0
 
@@ -154,14 +156,15 @@ def show_exam_result(request, course_id, submission_id):
             user_correct += 1
     
     correct_percent = user_correct * 100 // total_correct;
-    """
-    context = {}
-    context['grade'] = correct_percent
+    context = {'grade':correct_percent,
+                'course':course,
+                'submission':submission,
+                'user':user,
+                }
     return render(request,
-                 "onlinecourse/course_detail_bootstrap.html",
+                 "onlinecourse/exam_result_bootstrap.html",
                  context
                 )
-    """
 
 
 
